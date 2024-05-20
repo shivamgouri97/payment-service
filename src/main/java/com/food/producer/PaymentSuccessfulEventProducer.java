@@ -1,6 +1,7 @@
 package com.food.producer;
 
 
+import com.food.model.Order;
 import com.food.model.Payment;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,16 +11,16 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class PaymentProcessedEventProducer {
+public class PaymentSuccessfulEventProducer {
 
     @Value("${topic.name.producer}")
     private String topicName;
 
     @Autowired
-    private KafkaTemplate<String, Payment> kafkaTemplate;
+    private KafkaTemplate<String, Order> kafkaTemplate;
 
-    public void produce(Payment payment){
-        kafkaTemplate.send(topicName, payment);
-        log.info(String.format("Message Pushed to Queue -> %s", payment));
+    public void produce(Order order){
+        kafkaTemplate.send(topicName, order);
+        log.info(String.format("Message Pushed to payment-successful Queue -> %s", order));
     }
 }

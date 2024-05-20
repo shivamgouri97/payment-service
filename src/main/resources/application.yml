@@ -18,12 +18,12 @@ spring:
   kafka:
     producer:
       bootstrap-servers: 127.0.0.1:9092
-      group-id: payments_group
+      group-id: restaurants_1
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
     consumer:
       bootstrap-servers: 127.0.0.1:9092
-      group-id: orders_group
+      group-id: orders_1
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
@@ -45,5 +45,5 @@ auto:
 
 topic:
   name:
-    producer: payment-processed
+    producer: payment-successful
 

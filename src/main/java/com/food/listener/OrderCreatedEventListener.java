@@ -1,8 +1,9 @@
 package com.food.listener;
 
+import com.food.enums.Status;
 import com.food.model.Order;
 import com.food.model.Payment;
-import com.food.producer.PaymentProcessedEventProducer;
+import com.food.producer.PaymentSuccessfulEventProducer;
 import com.food.repository.PaymentRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,19 +18,23 @@ public class OrderCreatedEventListener {
     PaymentRepository paymentRepository;
 
     @Autowired
-    PaymentProcessedEventProducer paymentProcessedEventProducer;
+    PaymentSuccessfulEventProducer paymentSuccessfulEventProducer;
 
-    @KafkaListener(topics = "order-created", groupId = "orders_group")
+    @KafkaListener(topics = "order-created", groupId = "orders_1")
     public void consume(Order order){
-        log.info(String.format("Message received -> %s", order));
+        log.info(String.format("Message received  from order-> %s", order));
         Payment payment = new Payment();
         payment.setAmount(order.getTotalOrderPrice());
         payment.setOrderId(order.getId());
+        payment.setStatus(Status.SUCCESSFUL);
+        paymentRepository.save(payment);
+        //make payment through payment gateway, currently make it Successful
+
+        payment.setStatus(Status.SUCCESSFUL);
         paymentRepository.save(payment);
 
-        paymentProcessedEventProducer.produce(payment);
+        paymentSuccessfulEventProducer.produce(order);
 
 
-        //,containerFactory = "orderKafkaListenerContainerFactory"
         }
 }

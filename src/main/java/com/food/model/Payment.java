@@ -1,12 +1,13 @@
 package com.food.model;
 
+import com.food.enums.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
-@Entity()
+@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,5 +18,6 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
     private String orderId;
+    private Status status;
     private Double amount;
 }
